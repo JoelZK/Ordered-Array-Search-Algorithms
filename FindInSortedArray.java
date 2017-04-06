@@ -47,7 +47,7 @@ class FindInSortedArray {
 				l_index=index+1;
 			}
 		}
-		
+		System.out.println("By using binary search algorithm:");
 		System.out.println(list[index]==target?"The index of target number:"+target+"is"+index+".":"Can't find target number:"+target+"...");
 		System.out.println("It has compared "+compare+" times in total.");
 		System.out.println();
@@ -65,6 +65,7 @@ class FindInSortedArray {
 			}
 			compare++;
 		}
+		System.out.println("By using iterate search algorithm:");
 		System.out.println(list[index]==target?"The index of target number:"+target+"is"+index+".":"Can't find target number:"+target+"...");
 		System.out.println("It has compared "+compare+" times in total.");
 		System.out.println();
@@ -93,18 +94,20 @@ class FindInSortedArray {
 		}else{
 			//Determining wither the current location value is lager than the target or not.
 			boolean isBigger=list[index]>target;
+			boolean isFound;
 			compare++;
 			//According to the result of the determining to decide iterating forward or backward from current index.
 			for(;isBigger?index>=0:index<list.length;){
 				index=isBigger?index-1:index+1;
-				if(list[index]==target || (isBigger?list[index]<target:list[index]>target)){
+				if(isFound=(list[index]==target) || (isBigger?list[index]<target:list[index]>target)){
 					compare++;
-					result=list[index]==target?index:-1;
+					result=isFound?index:-1;
 					break;
 				}
 				compare++;
 			}
 		}
+		System.out.println("By using value-difference locating search algorithm:");
 		System.out.println(list[index]==target?"The index of target number:"+target+"is"+index+".":"Can't find target number:"+target+"...");
 		System.out.println("It has compared "+compare+" times in total.");
 		System.out.println();

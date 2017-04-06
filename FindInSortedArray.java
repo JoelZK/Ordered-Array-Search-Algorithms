@@ -21,8 +21,9 @@ class FindInSortedArray {
 		System.out.println();
 		
 		//Using different algorithem methods to do the same search job.
+		nornalSearch(li, target);
 		binarySearch(li, target);
-		sortDifferFind(li,target);
+		valueDifferSearch(li, target);
 	}
 	
 	//Using binary search algorithm

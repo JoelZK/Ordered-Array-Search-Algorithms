@@ -4,13 +4,12 @@ class FindInSortedArray {
 	public static void main(String[] args) {
 		Random r=new Random();
 		
-    //Create an 100 random int numbers contained array for testing 
-    //随机生成一个包含100个随机整数的数组用于测试各个查询算法		
-    int[] li=new int[100];
+		int[] li=new int[100];
 		for(int i=0;i<100;i++){
 			li[i]=r.nextInt(100);
 		}
 		
+		//int target=li[r.nextInt(99)];
 		int target=r.nextInt(99);
 		
 		Arrays.sort(li);
@@ -21,16 +20,11 @@ class FindInSortedArray {
 				System.out.println();
 		}
 		System.out.println();
-    
-    //Testing different algorithms below
-    //调用不同的算法测试结果
-    
-    sortHalfDivionFind(li, target);   //二分法
-    sortDifferFind(li,target);  //值差定位法（自订）
-  }
+		sortHalfDivionFind(li, target);
+		sortDifferFind(li,target);
+	}
 	
-  //二分法	
-  static void sortHalfDivionFind(int[] list, int target){
+	static void sortHalfDivionFind(int[] list, int target){
 		int compare=0;
 		//定义上下限
 		int l_index=0;				//下限
@@ -57,9 +51,8 @@ class FindInSortedArray {
 		System.out.println("比较了"+compare+"次。");
 		System.out.println();
 	}
-		
-    //顺序比较（遍历）
-    static void sortNormalFind(int[] list, int target){
+	
+	static void sortNormalFind(int[] list, int target){
 		int compare=0;
 		int index=-1;
 		for(int i=0;i<list.length;i++){
@@ -74,8 +67,40 @@ class FindInSortedArray {
 		System.out.println("比较了"+compare+"次。");
 		System.out.println();
 	}
-
-  //值差定位	
+	
+	static void sortHyperFind(int[] list, int target){
+		int compare=0;
+		int result=-1;
+		int index=-1;
+		int amount=list.length;
+		int max=list[amount-1];
+		int min=list[0];
+		int gap=(max-min)/amount>1?(max-min)/amount:1;
+		int diff=target%gap;
+		index=(diff>(gap>>1))?(target/gap)+1:(target/gap);
+		compare++;
+		int _index=-1;
+		if(target==list[index]){
+			result=index;
+			compare++;
+		}else{
+			boolean isBigger=target<list[index];
+			compare+=2;
+			for(int i=isBigger?0:index;i<(isBigger?index:amount);i++){
+				if(list[i]==target){
+					compare++;
+					result=i;
+					break;
+				}
+				compare++;
+			}
+			
+		}
+		System.out.println(result!=-1?target+"在第"+(result+1)+"个":"没找到"+target+"...");
+		System.out.println("比较了"+compare+"次。");
+		System.out.println();
+	}
+	
 	static void sortDifferFind(int[] list, int target){
 		int compare=0;
 		int result=-1;

@@ -3,13 +3,12 @@ import java.util.Random;
 class FindInSortedArray {
 	public static void main(String[] args) {
 		Random r=new Random();
-		
+		//Create a int array with 100 random integer elements for testing
 		int[] li=new int[100];
 		for(int i=0;i<100;i++){
 			li[i]=r.nextInt(100);
 		}
-		
-		//int target=li[r.nextInt(99)];
+		//Gathering an random integer within 0-99 as the searching target
 		int target=r.nextInt(99);
 		
 		Arrays.sort(li);
@@ -20,16 +19,18 @@ class FindInSortedArray {
 				System.out.println();
 		}
 		System.out.println();
-		sortHalfDivionFind(li, target);
+		
+		//Using different algorithem methods to do the same search job.
+		binarySearch(li, target);
 		sortDifferFind(li,target);
 	}
 	
-	static void sortHalfDivionFind(int[] list, int target){
+	//Using binary search algorithm
+	static void binarySearch(int[] list, int target){
 		int compare=0;
-		//定义上下限
-		int l_index=0;				//下限
-		int h_index=list.length-1;	//上限
-		//声明中间索引号
+		//Define lower-bound and upper-bound
+		int l_index=0;				//lower-bound
+		int h_index=list.length-1;	//upper-bound
 		int index=-1;
 		
 		while(l_index<=h_index && l_index<=list.length-1 && h_index<=list.length-1){
@@ -38,21 +39,21 @@ class FindInSortedArray {
 				compare++;
 				break;
 			}else if(list[index]>target){
-				compare++;
+				compare+=2;
 				h_index=index-1;
 			}else{
-				compare++;
+				compare+=2;
 				l_index=index+1;
 			}
-			//compare++;
 		}
 		
-		System.out.println(list[index]==target?target+"在第"+(index+1)+"个":"没找到"+target+"...");
-		System.out.println("比较了"+compare+"次。");
+		System.out.println(list[index]==target?"The index of target number:"+target+"is"+index+".":"Can't find target number:"+target+"...");
+		System.out.println("It has compared "+compare+" times in total.");
 		System.out.println();
 	}
 	
-	static void sortNormalFind(int[] list, int target){
+	//Using iterate search algorithm
+	static void normalSearch(int[] list, int target){
 		int compare=0;
 		int index=-1;
 		for(int i=0;i<list.length;i++){
@@ -63,45 +64,13 @@ class FindInSortedArray {
 			}
 			compare++;
 		}
-		System.out.println(index!=-1?target+"在第"+(index+1)+"个":"没找到"+target+"...");
-		System.out.println("比较了"+compare+"次。");
+		System.out.println(list[index]==target?"The index of target number:"+target+"is"+index+".":"Can't find target number:"+target+"...");
+		System.out.println("It has compared "+compare+" times in total.");
 		System.out.println();
 	}
 	
-	static void sortHyperFind(int[] list, int target){
-		int compare=0;
-		int result=-1;
-		int index=-1;
-		int amount=list.length;
-		int max=list[amount-1];
-		int min=list[0];
-		int gap=(max-min)/amount>1?(max-min)/amount:1;
-		int diff=target%gap;
-		index=(diff>(gap>>1))?(target/gap)+1:(target/gap);
-		compare++;
-		int _index=-1;
-		if(target==list[index]){
-			result=index;
-			compare++;
-		}else{
-			boolean isBigger=target<list[index];
-			compare+=2;
-			for(int i=isBigger?0:index;i<(isBigger?index:amount);i++){
-				if(list[i]==target){
-					compare++;
-					result=i;
-					break;
-				}
-				compare++;
-			}
-			
-		}
-		System.out.println(result!=-1?target+"在第"+(result+1)+"个":"没找到"+target+"...");
-		System.out.println("比较了"+compare+"次。");
-		System.out.println();
-	}
-	
-	static void sortDifferFind(int[] list, int target){
+	//Using value different locating search algorithm
+	static void valueDifferSearch(int[] list, int target){
 		int compare=0;
 		int result=-1;
 		int max_index=list.length-1;
@@ -109,18 +78,22 @@ class FindInSortedArray {
 		int gap;
 		int index;
 		
-		gap=(list[max_index]-list[min_index])/(max_index-min_index+1);
+		//Calcuate the average different of the value of elements
+		gap=(list[list.length-1]-list[0])/list.length;
+		//Set the different as 1 if it less than 1 to avoid it becames to 0 because of the fonce covert from double to integer)
 		gap=gap>1?gap:1;
 		compare++;
+		//Locate the position according to the amount of differents that the target integer has contented. 
 		index=target/gap;
 		
 		if(list[index]==target){
 			compare++;
 			result=index;
 		}else{
+			//Determining wither the current location value is lager than the target or not.
 			boolean isBigger=list[index]>target;
 			compare++;
-			//boolean keepLoop=;
+			//According to the result of the determining to decide iterating forward or backward from current index.
 			for(;isBigger?index>=0:index<list.length;){
 				index=isBigger?index-1:index+1;
 				if(list[index]==target || (isBigger?list[index]<target:list[index]>target)){
@@ -131,8 +104,8 @@ class FindInSortedArray {
 				compare++;
 			}
 		}
-		System.out.println(result!=-1?target+"在第"+(result+1)+"个":"没找到"+target+"...");
-		System.out.println("比较了"+compare+"次。");
+		System.out.println(list[index]==target?"The index of target number:"+target+"is"+index+".":"Can't find target number:"+target+"...");
+		System.out.println("It has compared "+compare+" times in total.");
 		System.out.println();
 	}
 }
